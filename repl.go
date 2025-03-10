@@ -4,30 +4,15 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
+	"time"
+
+	"github.com/agreen254/pokedexcli/internal/pokecache"
 )
-
-func cleanInput(text string) []string {
-	fields := strings.Fields(text)
-
-	lowered := make([]string, len(fields))
-	for i, field := range fields {
-		lowered[i] = strings.ToLower(field)
-	}
-	return lowered
-}
-
-func getCmd(input string) string {
-	fields := strings.Fields(strings.ToLower(input))
-	if len(fields) == 0 {
-		return ""
-	} else {
-		return fields[0]
-	}
-}
 
 func repl() {
 	scanner := bufio.NewScanner(os.Stdin)
+	cache := pokecache.NewCache(time.Second * 10)
+
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
@@ -36,6 +21,18 @@ func repl() {
 		}
 
 		input := scanner.Text()
-		fmt.Printf("Your command was: %s\n", getCmd(input))
+
+		userCommand := getCmd(input)
+		sysCommand, ok := getCommands()[userCommand]
+		if !ok {
+			fmt.Println("Unknown command")
+			continue
+		}
+
+		err := sysCommand.callback(&cfg, &cache)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		fmt.Println()
 	}
 }
