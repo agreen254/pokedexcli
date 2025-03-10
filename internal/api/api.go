@@ -13,7 +13,6 @@ const BASE_PATH = "https://pokeapi.co/api/v2/"
 // to decode any response into the expected arg.
 func MakeRequest(path string, expected any) error {
 	fullPath := BASE_PATH + path
-	fmt.Println("Spawning request to", fullPath)
 	res, err := http.Get(fullPath)
 	if err != nil {
 		return fmt.Errorf("failed to make request: %w", err)
