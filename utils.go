@@ -24,7 +24,7 @@ func lastDir(path string) string {
 	return slice[len(slice)-1]
 }
 
-func requestAndCache[T any](cache *pokecache.Cache, path string, handlerFunc func(string) (T, error)) (T, error) {
+func requestOrCache[T any](cache *pokecache.Cache, path string, handlerFunc func(string) (T, error)) (T, error) {
 	var data T
 	entry, ok := cache.Get(api.BASE_PATH + path)
 
@@ -38,10 +38,12 @@ func requestAndCache[T any](cache *pokecache.Cache, path string, handlerFunc fun
 		if err != nil {
 			return data, err
 		}
+
 		cacheData, err := json.Marshal(res)
 		if err != nil {
 			return data, fmt.Errorf("error adding data to cache: %w", err)
 		}
+
 		cache.Add(api.BASE_PATH+path, cacheData)
 		data = res
 	}

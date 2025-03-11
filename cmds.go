@@ -9,7 +9,13 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, *pokecache.Cache) error
+	callback    func(params cmdParams) error
+}
+
+type cmdParams struct {
+	cfg   *config
+	cache *pokecache.Cache
+	arg   string
 }
 
 func getCmd(input string) string {
@@ -35,13 +41,18 @@ func getCommands() map[string]cliCommand {
 		},
 		"map": {
 			name:        "map",
-			description: "Displays the names of locations in the pokemon world",
+			description: "Displays the names of locations in the pokemon world. Successive calls will show more pages of names.",
 			callback:    commandMap,
 		},
 		"mapb": {
 			name:        "mapb",
-			description: "Displays the previous page of location names",
+			description: "Short for map-back. Displays the previous page of location names.",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Returns the list of possible encounters within an area. Example: explore celadon-city-area",
+			callback:    commandExplore,
 		},
 	}
 }

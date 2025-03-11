@@ -1,23 +1,17 @@
 package api
 
 type LocationAreaResponse struct {
-	Count    int
-	Next     *string
-	Previous *string
+	Count    int     `json:"count"`
+	Next     *string `json:"next"`
+	Previous *string `json:"previous"`
 	Results  []LocationListItem
 }
 
 type LocationListItem struct {
-	Name string
-	Url  string
+	Name string `json:"name"`
+	Url  string `json:"url"`
 }
 
-func MakeRequestMap(path string) (LocationAreaResponse, error) {
-	var res LocationAreaResponse
-	err := MakeRequest(path, &res)
-	if err != nil {
-		return res, err
-	}
-
-	return res, nil
+func MapRequest(path string) (LocationAreaResponse, error) {
+	return MakeRequest[LocationAreaResponse](path)
 }

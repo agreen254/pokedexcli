@@ -5,22 +5,24 @@ import (
 	"fmt"
 
 	"github.com/agreen254/pokedexcli/internal/api"
-	"github.com/agreen254/pokedexcli/internal/pokecache"
 )
 
-func commandMapb(cfg *config, cache *pokecache.Cache) error {
-	if cfg.mapCommand.prev == nil && cfg.mapCommand.next != nil {
+func commandMapb(params cmdParams) error {
+	next := params.cfg.mapCommand.next
+	prev := params.cfg.mapCommand.prev
+
+	if prev == nil && next != nil {
 		return errors.New("you're on the first page")
 	}
 
 	var path string
-	if cfg.mapCommand.next == nil && cfg.mapCommand.prev == nil {
+	if next == nil && prev == nil {
 		return errors.New("no pages yet")
 	} else {
 		path = lastDir(*cfg.mapCommand.prev)
 	}
 
-	data, err := requestAndCache(cache, path, api.MakeRequestMap)
+	data, err := requestOrCache(params.cache, path, api.MapRequest)
 	if err != nil {
 		return err
 	}
@@ -30,8 +32,8 @@ func commandMapb(cfg *config, cache *pokecache.Cache) error {
 	}
 
 	// update the config with the next/prev returned via the response
-	cfg.mapCommand.next = data.Next
-	cfg.mapCommand.prev = data.Previous
+	params.cfg.mapCommand.next = data.Next
+	params.cfg.mapCommand.prev = data.Previous
 
 	return nil
 }

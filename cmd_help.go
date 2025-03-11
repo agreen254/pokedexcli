@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/agreen254/pokedexcli/internal/pokecache"
 )
 
-func commandHelp(*config, *pokecache.Cache) error {
+func commandHelp(params cmdParams) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Print("Usage:\n\n")
 	for _, cmd := range getCommands() {
