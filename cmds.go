@@ -39,6 +39,21 @@ func getCommands() map[string]cliCommand {
 			description: "Displays a help message",
 			callback:    commandHelp,
 		},
+		"catch": {
+			name:        "catch",
+			description: "Attempts to catch the specified pokemon. Example: catch jolteon",
+			callback:    commandCatch,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Returns the list of possible encounters within an area. Example: explore celadon-city-area",
+			callback:    commandExplore,
+		},
+		"inspect": {
+			name:        "inspect",
+			description: "Returns a list of properties for the given pokemon. Inspect not work unless you have caught the pokemon. Example: inspect pidgey",
+			callback:    commandInspect,
+		},
 		"map": {
 			name:        "map",
 			description: "Displays the names of locations in the pokemon world. Successive calls will show more pages of names.",
@@ -49,10 +64,10 @@ func getCommands() map[string]cliCommand {
 			description: "Short for map-back. Displays the previous page of location names.",
 			callback:    commandMapb,
 		},
-		"explore": {
-			name:        "explore",
-			description: "Returns the list of possible encounters within an area. Example: explore celadon-city-area",
-			callback:    commandExplore,
+		"pokedex": {
+			name:        "pokedex",
+			description: "List out all pokemon you have caught. Gotta catch em' all!",
+			callback:    commandPokedex,
 		},
 	}
 }

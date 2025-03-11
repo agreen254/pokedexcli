@@ -2,6 +2,7 @@ package main
 
 type config struct {
 	mapCommand mapCommandParams
+	pokedex    Pokedex
 }
 
 type mapCommandParams struct {
@@ -14,4 +15,5 @@ var cfg = config{
 		next: nil,
 		prev: nil,
 	},
+	pokedex: Pokedex{},
 }

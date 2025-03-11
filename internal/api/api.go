@@ -24,6 +24,9 @@ func MakeRequest[T any](path string) (T, error) {
 	decoder := json.NewDecoder(res.Body)
 	err = decoder.Decode(&data)
 	if err != nil {
+		if err.Error() == "invalid character 'N' looking for beginning of value" {
+			return data, fmt.Errorf("not found")
+		}
 		return data, fmt.Errorf("failed to decode body: %w", err)
 	}
 
